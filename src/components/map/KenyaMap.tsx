@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -41,17 +41,53 @@ interface KenyaMapProps {
 
 function MapController({ center, zoom }: { center: [number, number]; zoom: number }) {
   const map = useMap();
-  useEffect(() => { map.setView(center, zoom); }, [center, zoom, map]);
+  useEffect(() => {
+    if (map) {
+      map.setView(center, zoom);
+    }
+  }, [map, center, zoom]);
   return null;
 }
 
-export function KenyaMap({ facilities, onFacilityClick, showCoverageZones = false, showMedicalDeserts = false, center = [-1.2921, 36.8219], zoom = 6 }: KenyaMapProps) {
+function LoadingFallback() {
   return (
-    <div className="w-full h-full rounded-lg overflow-hidden border border-gray-700">
-      <MapContainer center={center} zoom={zoom} className="w-full h-full" style={{ background: '#1a1a24' }}>
+    <div className="w-full h-full flex items-center justify-center bg-[#1a1a24] rounded-lg border border-gray-700">
+      <div className="text-center text-gray-400">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500 mx-auto mb-2"></div>
+        <p className="text-sm">Loading map...</p>
+      </div>
+    </div>
+  );
+}
+
+export function KenyaMap({ facilities, onFacilityClick, showCoverageZones = false, showMedicalDeserts = false, center = [-1.2921, 36.8219], zoom = 6 }: KenyaMapProps) {
+  const [isClient, setIsClient] = useState(false);
+  const [mapKey, setMapKey] = useState(0);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Ensure facilities is a valid array
+  const validFacilities = Array.isArray(facilities) ? facilities.filter(f => f && f.coordinates) : [];
+
+  if (!isClient) {
+    return <LoadingFallback />;
+  }
+
+  return (
+    <div className="w-full h-full rounded-lg overflow-hidden border border-gray-700" style={{ minHeight: '400px' }}>
+      <MapContainer
+        key={mapKey}
+        center={center}
+        zoom={zoom}
+        className="w-full h-full"
+        style={{ background: '#1a1a24', minHeight: '400px' }}
+        scrollWheelZoom={true}
+      >
         <MapController center={center} zoom={zoom} />
         <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        {showCoverageZones && facilities.filter((f) => f.type === 'level5' || f.type === 'level6').map((facility) => (
+        {showCoverageZones && validFacilities.filter((f) => f.type === 'level5' || f.type === 'level6').map((facility) => (
           <Circle key={`coverage-${facility.id}`} center={facility.coordinates} radius={30000} pathOptions={{ color: '#10b981', fillColor: '#10b981', fillOpacity: 0.1, weight: 1 }} />
         ))}
         {showMedicalDeserts && (
@@ -60,8 +96,13 @@ export function KenyaMap({ facilities, onFacilityClick, showCoverageZones = fals
             <Circle center={[2.0, 40.5]} radius={60000} pathOptions={{ color: '#ef4444', fillColor: '#ef4444', fillOpacity: 0.15, weight: 2, dashArray: '5, 5' }} />
           </>
         )}
-        {facilities.map((facility) => (
-          <Marker key={facility.id} position={facility.coordinates} icon={facility.hasAnomaly ? facilityIcons.anomaly : facilityIcons[facility.type]} eventHandlers={{ click: () => onFacilityClick?.(facility) }}>
+        {validFacilities.map((facility) => (
+          <Marker
+            key={facility.id}
+            position={facility.coordinates}
+            icon={facility.hasAnomaly ? facilityIcons.anomaly : facilityIcons[facility.type]}
+            eventHandlers={{ click: () => onFacilityClick?.(facility) }}
+          >
             <Popup>
               <div className="text-sm">
                 <div className="font-bold text-gray-900">{facility.name}</div>
