@@ -1,0 +1,121 @@
+# Component Diagram
+
+## Overview
+
+This document shows the detailed component relationships in the Kenya Health Intelligence Platform.
+
+## Core Components
+
+### Application Shell
+
+```
+┌──────────────────────────────────────────────┐
+│                   App                         │
+│  ┌────────────────────────────────────────┐ │
+│  │           ErrorBoundary                  │ │
+│  │  ┌──────────────────────────────────┐  │ │
+│  │  │        BrowserRouter              │  │ │
+│  │  │  ┌──────────────────────────┐    │  │ │
+│  │  │  │       Routes             │    │  │ │
+│  │  │  │  ┌──────────────────┐   │    │  │ │
+│  │  │  │  │ Route: /         │   │    │  │ │
+│  │  │  │  │ CommandCenter    │   │    │  │ │
+│  │  │  │  └──────────────────┘   │    │  │ │
+│  │  │  │  ┌──────────────────┐   │    │  │ │
+│  │  │  │  │ Route: /explorer│   │    │  │ │
+│  │  │  │  │ FacilityExplorer│   │    │  │ │
+│  │  │  │  └──────────────────┘   │    │  │ │
+│  │  │  │  ...                    │    │  │ │
+│  │  │  └──────────────────────────┘  │  │ │
+│  │  └──────────────────────────────────┘  │ │
+│  └────────────────────────────────────────┘ │
+└──────────────────────────────────────────────┘
+```
+
+### Page Components
+
+```
+┌─────────────────────────────────────────────────────┐
+│                   Page Components                      │
+├─────────────────────────────────────────────────────┤
+│                                                      │
+│  CommandCenter                                       │
+│  ├── Card (Chat Interface)                          │
+│  │   └── Input + Button                            │
+│  ├── KenyaMap                                      │
+│  │   ├── MapController                              │
+│  │   ├── TileLayer                                  │
+│  │   ├── Marker[]                                   │
+│  │   └── Circle[]                                   │
+│  ├── MapLegend                                      │
+│  └── StatCard[]                                     │
+│                                                      │
+│  FacilityExplorer                                   │
+│  ├── Card (Filters)                                 │
+│  │   ├── Checkbox[]                                 │
+│  │   └── Select                                     │
+│  ├── SearchInput                                    │
+│  ├── StatCard[]                                     │
+│  ├── KenyaMap                                      │
+│  └── MapLegend                                      │
+│                                                      │
+└─────────────────────────────────────────────────────┘
+```
+
+### UI Components
+
+```
+┌─────────────────────────────────────────────────────┐
+│                    UI Library                         │
+├─────────────────────────────────────────────────────┤
+│                                                      │
+│  Card                                               │
+│  ├── title?: string                                 │
+│  ├── children: ReactNode                            │
+│  └── className?: string                             │
+│                                                      │
+│  Button                                            │
+│  ├── variant: 'default' | 'outline' | 'ghost'     │
+│  ├── size: 'sm' | 'md' | 'lg'                     │
+│  ├── children: ReactNode                            │
+│  └── onClick?: () => void                          │
+│                                                      │
+│  Badge                                             │
+│  ├── variant: 'default' | 'success' | 'warning'   │
+│  └── children: ReactNode                           │
+│                                                      │
+│  Input                                             │
+│  ├── type: string                                  │
+│  ├── placeholder: string                            │
+│  └── value?: string                                │
+│                                                      │
+│  Checkbox                                          │
+│  ├── label: string                                  │
+│  ├── checked: boolean                              │
+│  └── onChange: (checked: boolean) => void          │
+│                                                      │
+└─────────────────────────────────────────────────────┘
+```
+
+## Data Components
+
+```
+┌─────────────────────────────────────────────────────┐
+│                  Data Components                     │
+├─────────────────────────────────────────────────────┤
+│                                                      │
+│  kenya-data.ts                                      │
+│  ├── FACILITIES: Facility[]                        │
+│  │   ├── id, name, type, county                   │
+│  │   ├── coordinates, capabilities                 │
+│  │   └── procedures, equipment, hasAnomaly        │
+│  │                                                │
+│  ├── KENYA_COUNTIES: County[]                      │
+│  │   ├── id, name, medicalDesertScore            │
+│  │   └── population, facilities                   │
+│  │                                                │
+│  └── FACILITY_TYPES: TypeOption[]                 │
+│      ├── value, label                              │
+│                                                      │
+└─────────────────────────────────────────────────────┘
+```

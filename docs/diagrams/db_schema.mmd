@@ -1,0 +1,113 @@
+# Database Schema
+
+## Current Implementation (Static Data)
+
+The Kenya Health Intelligence Platform currently uses static JSON data for facilities and counties. This document outlines the data structure.
+
+## Data Models
+
+### Facility
+
+```typescript
+interface Facility {
+  id: string;                    // Unique identifier
+  name: string;                  // Facility name
+  type: FacilityType;            // Facility level
+  typeLabel: string;             // Human-readable type
+  county: string;                // County name
+  coordinates: [number, number]; // [latitude, longitude]
+  capabilities: number;          // Capability score
+  procedures: number;           // Procedures count
+  equipment: number;             // Equipment score
+  hasAnomaly: boolean;            // Anomaly detection flag
+}
+
+type FacilityType =
+  | 'level6'  // National Referral
+  | 'level5'  // County Referral
+  | 'level4'  // Sub-County Hospital
+  | 'level3'  // Health Centre
+  | 'level2'  // Dispensary/Clinic
+  | 'specialized'; // Specialized facility
+```
+
+### County
+
+```typescript
+interface County {
+  id: string;                    // Unique identifier
+  name: string;                  // County name
+  medicalDesertScore: number;    // 0-100 scale
+  population: number;            // Population count
+  facilities: number;            // Facility count
+}
+```
+
+## Sample Data Structure
+
+### Facilities JSON
+
+```json
+[
+  {
+    "id": "fac-001",
+    "name": "Kenyatta National Hospital",
+    "type": "level6",
+    "typeLabel": "National Referral",
+    "county": "Nairobi",
+    "coordinates": [-1.2921, 36.8219],
+    "capabilities": 95,
+    "procedures": 15000,
+    "equipment": 98,
+    "hasAnomaly": false
+  }
+]
+```
+
+### Counties JSON
+
+```json
+[
+  {
+    "id": "nairobi",
+    "name": "Nairobi",
+    "medicalDesertScore": 15,
+    "population": 4397073,
+    "facilities": 45
+  }
+]
+```
+
+## Future Database Considerations
+
+For production deployment with dynamic data, consider:
+
+### PostgreSQL Schema (Future)
+
+```sql
+CREATE TABLE counties (
+  id UUID PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  medical_desert_score INTEGER,
+  population INTEGER,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE facilities (
+  id UUID PRIMARY KEY,
+  name VARCHAR(200) NOT NULL,
+  type VARCHAR(50) NOT NULL,
+  county_id UUID REFERENCES counties(id),
+  latitude DECIMAL(10, 7),
+  longitude DECIMAL(10, 7),
+  capabilities INTEGER,
+  procedures INTEGER,
+  equipment INTEGER,
+  has_anomaly BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_facilities_county ON facilities(county_id);
+CREATE INDEX idx_facilities_type ON facilities(type);
+CREATE INDEX idx_facilities_location ON facilities(latitude, longitude);
+```

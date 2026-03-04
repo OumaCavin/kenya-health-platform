@@ -2,9 +2,9 @@
 
 <div align="center">
 
-![React](https://img.shields.io/badge/React-18.3-blue?style=for-the-badge&logo=react)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.4-blue?style=for-the-badge&logo=typescript)
-![Vite](https://img.shields.io/badge/Vite-5.4-purple?style=for-the-badge&logo=vite)
+![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue?style=for-the-badge&logo=typescript)
+![Vite](https://img.shields.io/badge/Vite-6-purple?style=for-the-badge&logo=vite)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38bdf8?style=for-the-badge&logo=tailwindcss)
 ![Leaflet](https://img.shields.io/badge/Leaflet-1.9-199c4d?style=for-the-badge&logo=leaflet)
 
@@ -47,10 +47,10 @@ A comprehensive healthcare desert mapping and facility management system for Ken
 
 | Category | Technology |
 |----------|------------|
-| **Frontend** | React 18.3, TypeScript 5.4 |
-| **Build Tool** | Vite 5.4 |
+| **Frontend** | React 19, TypeScript 5.6 |
+| **Build Tool** | Vite 6 |
 | **Styling** | TailwindCSS 3.4, Lucide React Icons |
-| **Maps** | Leaflet, React-Leaflet |
+| **Maps** | Leaflet, React-Leaflet v5 |
 | **State** | React Context API |
 | **Routing** | React Router DOM 6 |
 
@@ -128,6 +128,62 @@ The platform includes comprehensive data for all 47 Kenyan counties:
 3. Commit your changes (`git commit -m 'feat: add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
+
+## Deployment
+
+### Vercel (Recommended)
+
+```bash
+# Install Vercel CLI
+npm install -g vercel
+
+# Login
+vercel login
+
+# Deploy
+vercel
+```
+
+### Netlify
+
+```bash
+# Install Netlify CLI
+npm install -g netlify-cli
+
+# Build and deploy
+pnpm build
+netlify deploy --prod --dir=dist
+```
+
+### Docker
+
+```bash
+# Build Docker image
+docker build -t kenya-health-platform:latest .
+
+# Run container
+docker run -d -p 8080:80 kenya-health-platform:latest
+```
+
+### Cloudflare Pages
+
+```bash
+# Install Wrangler
+npm install -g wrangler
+
+# Deploy
+wrangler pages deploy dist --project-name=kenya-health-platform
+```
+
+## Documentation
+
+Detailed documentation is available in the `docs/` directory:
+
+- [Architecture Overview](docs/ARCHITECTURE_DIAGRAMS.md)
+- [Architecture Details](docs/architecture/architecture_overview.md)
+- [Class Diagrams](docs/architecture/class_diagrams.md)
+- [Component Diagrams](docs/architecture/component_diagrams.md)
+- [Deployment Guide](docs/architecture/deployment_architecture.md)
 
 ## License
 
