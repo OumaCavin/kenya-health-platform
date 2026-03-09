@@ -10,6 +10,7 @@ export function IDPAgent() {
   const [selectedFacility, setSelectedFacility] = useState<Facility | null>(null);
   const [isExtracting, setIsExtracting] = useState(false);
   const [extracted, setExtracted] = useState(false);
+  const [showSchema, setShowSchema] = useState(false);
 
   const handleExtract = () => {
     if (!selectedFacility) return;
@@ -24,14 +25,53 @@ export function IDPAgent() {
     const facility = FACILITIES.find((f) => f.id === e.target.value);
     setSelectedFacility(facility || null);
     setExtracted(false);
+    setShowSchema(false);
+  };
+
+  const handleViewSchema = () => {
+    setShowSchema(!showSchema);
+  };
+
+  const handleExportJSON = () => {
+    if (!selectedFacility) return;
+    const dataStr = JSON.stringify(selectedFacility, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${selectedFacility.name.replace(/\s+/g, '_')}_data.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   return (
     <PageLayout title="IDP Agents" subtitle="Structured extraction from raw facility records">
       <div className="flex gap-3 mb-6">
-        <Button variant="outline" icon={<FileCode className="w-4 h-4" />}>View Schema</Button>
-        <Button variant="outline" icon={<FileJson className="w-4 h-4" />}>Export JSON</Button>
+        <Button variant="outline" icon={<FileCode className="w-4 h-4" />} onClick={handleViewSchema}>View Schema</Button>
+        <Button variant="outline" icon={<FileJson className="w-4 h-4" />} onClick={handleExportJSON} disabled={!selectedFacility}>Export JSON</Button>
       </div>
+
+      {showSchema && (
+        <Card title="Facility Data Schema" className="mb-6">
+          <pre className="bg-[#1a1a24] p-4 rounded-lg text-xs text-gray-300 overflow-x-auto">
+{`{
+  "id": "string",
+  "name": "string",
+  "type": "level6 | level5 | level4 | level3 | level2 | specialized",
+  "typeLabel": "string",
+  "county": "string",
+  "coordinates": "[number, number]",
+  "capabilities": "number (0-100)",
+  "procedures": "number",
+  "equipment": "number (0-100)",
+  "hasAnomaly": "boolean",
+  "verified": "boolean"
+}`}
+          </pre>
+        </Card>
+      )}
 
       <div className="grid grid-cols-12 gap-6">
         <div className="col-span-5">

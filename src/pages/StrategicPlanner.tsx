@@ -4,7 +4,7 @@ import { Card, StatCard } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Input, Select } from '../components/ui/Form';
 import { Badge } from '../components/ui/Badge';
-import { KENYA_COUNTIES, GAP_DATA } from '../data/kenya-data';
+import { KENYA_COUNTIES, GAP_DATA, FACILITIES } from '../data/kenya-data';
 import { Download, Rocket, ChevronRight, ChevronLeft, Lightbulb, AlertTriangle } from 'lucide-react';
 
 export function StrategicPlanner() {
@@ -13,6 +13,7 @@ export function StrategicPlanner() {
   const [selectedCounty, setSelectedCounty] = useState('');
   const [gapFocus, setGapFocus] = useState('');
   const [priority, setPriority] = useState('high');
+  const [planCreated, setPlanCreated] = useState(false);
 
   const criticalGaps = GAP_DATA.filter((g) => g.surgical === 0 || g.maternal === 0).length;
   const underserved = GAP_DATA.filter((g) => g.surgical <= 2 || g.maternal <= 2).length;
@@ -32,13 +33,70 @@ export function StrategicPlanner() {
     { value: 'dental', label: 'Dental Services' },
   ];
 
+  const handleExportDataset = () => {
+    const exportData = {
+      facilities: FACILITIES,
+      counties: KENYA_COUNTIES,
+      gapAnalysis: GAP_DATA,
+      summary: {
+        totalFacilities: FACILITIES.length,
+        totalCounties: KENYA_COUNTIES.length,
+        criticalGaps,
+        underserved,
+        adequate,
+        surgicalDeficit,
+        maternalGap,
+        pediatricCoverage,
+      },
+    };
+    const dataStr = JSON.stringify(exportData, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `kenya_healthcare_dataset_${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleQuickDeploy = () => {
+    const deployPlan = {
+      title: planTitle || 'Quick Deploy Plan',
+      county: selectedCounty,
+      gapFocus,
+      priority,
+      timestamp: new Date().toISOString(),
+      status: 'ready',
+    };
+    const dataStr = JSON.stringify(deployPlan, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `deploy_plan_${Date.now()}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleCreatePlan = () => {
+    if (wizardStep === 4) {
+      handleQuickDeploy();
+      setPlanCreated(true);
+      setTimeout(() => setPlanCreated(false), 3000);
+    }
+  };
+
   return (
     <PageLayout title="Strategic Resource Planner" subtitle="Dataset: 47 Counties Analyzed · Gap Matrix & Allocation">
       <div className="flex items-center gap-2 mb-6">
         <Badge variant="info">BETA v2.4</Badge>
         <div className="ml-auto flex gap-3">
-          <Button variant="outline" icon={<Download className="w-4 h-4" />}>Export Dataset</Button>
-          <Button icon={<Rocket className="w-4 h-4" />}>Quick Deploy Plan</Button>
+          <Button variant="outline" icon={<Download className="w-4 h-4" />} onClick={handleExportDataset}>Export Dataset</Button>
+          <Button icon={<Rocket className="w-4 h-4" />} onClick={handleQuickDeploy}>Quick Deploy Plan</Button>
         </div>
       </div>
 
@@ -134,7 +192,7 @@ export function StrategicPlanner() {
 
             <div className="flex gap-2 mt-4">
               <Button variant="outline" disabled={wizardStep === 1} onClick={() => setWizardStep((s) => s - 1)} icon={<ChevronLeft className="w-4 h-4" />}>Back</Button>
-              <Button className="flex-1" onClick={() => wizardStep < 4 ? setWizardStep((s) => s + 1) : null} icon={wizardStep < 4 ? <ChevronRight className="w-4 h-4" /> : undefined}>
+              <Button className="flex-1" onClick={() => wizardStep < 4 ? setWizardStep((s) => s + 1) : handleCreatePlan()} icon={wizardStep < 4 ? <ChevronRight className="w-4 h-4" /> : undefined}>
                 {wizardStep < 4 ? 'Next' : 'Create Plan'}
               </Button>
             </div>
