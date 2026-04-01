@@ -1,0 +1,13 @@
+{
+  "buildCommand": "pnpm build",
+  "outputDirectory": "docs",
+  "framework": "vite",
+  "installCommand": "pnpm install",
+  "devCommand": "pnpm dev",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/docs/$1"
+    }
+  ]
+}
