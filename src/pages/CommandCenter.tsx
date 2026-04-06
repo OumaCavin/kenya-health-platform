@@ -3,8 +3,9 @@ import { PageLayout } from '../components/layout/PageLayout';
 import { Card, StatCard } from '../components/ui/Card';
 import { KenyaMap } from '../components/map/KenyaMap';
 import { MapLegend } from '../components/map/MapLegend';
+import { Chat } from '../components/ui/Chat';
 import { FACILITIES, KENYA_COUNTIES } from '../data/kenya-data';
-import { MessageSquare, Zap, ToggleLeft, ToggleRight } from 'lucide-react';
+import { ToggleLeft, ToggleRight } from 'lucide-react';
 
 export function CommandCenter() {
   const [autoRead, setAutoRead] = useState(false);
@@ -45,20 +46,7 @@ export function CommandCenter() {
                 </button>
               </div>
             </div>
-            <div className="flex gap-2">
-              <div className="flex-1 relative">
-                <MessageSquare className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-                <input
-                  type="text"
-                  placeholder="Ask about regional health data..."
-                  className="w-full bg-[#1a1a24] border border-gray-700 rounded-lg pl-10 pr-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
-                />
-              </div>
-              <button className="px-4 py-2 bg-emerald-500 text-white rounded-lg text-sm font-medium hover:bg-emerald-600 flex items-center gap-2">
-                <Zap className="w-4 h-4" />
-                Query
-              </button>
-            </div>
+            <Chat autoRead={autoRead} onAutoReadChange={setAutoRead} />
           </Card>
 
           {/* Map */}
