@@ -191,10 +191,12 @@ This project is licensed under the MIT License.
 
 ## Author
 
-**Cavin Otieno** - OumaCavin
+**Cavin Otieno**
+*Full Stack Software Engineer | Data Science & Health Tech Enthusiast*
 
-- GitHub: [@OumaCavin](https://github.com/OumaCavin)
-- Email: cavin.otieno012@gmail.com
+- **Location:** Nairobi, Kenya
+- **GitHub:** [@OumaCavin](https://github.com/OumaCavin)
+- **Email:** cavin.otieno012@gmail.com
 
 ---
 
