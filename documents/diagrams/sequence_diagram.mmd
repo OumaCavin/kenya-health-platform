@@ -2,7 +2,6 @@
 
 ## User Interaction: Facility Search
 
-```mermaid
 sequenceDiagram
     participant User
     participant FacilityExplorer
@@ -15,11 +14,9 @@ sequenceDiagram
     FacilityExplorer->>KenyaMap: Pass filtered facilities
     KenyaMap->>KenyaMap: Render map with markers
     KenyaMap-->>User: Display updated map
-```
 
 ## Map Loading Sequence
 
-```mermaid
 sequenceDiagram
     participant Component
     participant KenyaMap
@@ -34,11 +31,9 @@ sequenceDiagram
     OpenStreetMap-->>Leaflet: Return tiles
     Leaflet-->>KenyaMap: Map ready
     KenyaMap-->>Component: Render with markers
-```
 
 ## Navigation Flow
 
-```mermaid
 sequenceDiagram
     participant User
     participant BrowserRouter
@@ -50,4 +45,3 @@ sequenceDiagram
     BrowserRouter->>BrowserRouter: Update URL
     BrowserRouter->>Page: Load new page component
     Page-->>User: Display new page
-```

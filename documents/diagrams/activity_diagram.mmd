@@ -2,7 +2,6 @@
 
 ## Facility Search Flow
 
-```mermaid
 flowchart TD
     A[User visits Facility Explorer] --> B[Enter search query]
     B --> C[Select facility types]
@@ -15,11 +14,9 @@ flowchart TD
     I --> J[Show facility popup]
     J --> K[User can continue filtering]
     K --> B
-```
 
 ## Command Center Flow
 
-```mermaid
 flowchart TD
     A[User visits Command Center] --> B[Load facility data]
     B --> C[Initialize map]
@@ -33,11 +30,9 @@ flowchart TD
     I --> K[User clicks refresh]
     J --> K
     K --> L[Update map and stats]
-```
 
 ## Map Interaction Flow
 
-```mermaid
 flowchart TD
     A[Map loads] --> B[User scrolls/zooms]
     B --> C[Leaflet handles zoom/pan]
@@ -46,4 +41,3 @@ flowchart TD
     E --> F[User views facility details]
     F --> G[User closes popup]
     G --> B
-```
