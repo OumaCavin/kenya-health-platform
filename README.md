@@ -2,13 +2,18 @@
 
 <div align="center">
 
-![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react)
+![React](https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue?style=for-the-badge&logo=typescript)
 ![Vite](https://img.shields.io/badge/Vite-6-purple?style=for-the-badge&logo=vite)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38bdf8?style=for-the-badge&logo=tailwindcss)
 ![Leaflet](https://img.shields.io/badge/Leaflet-1.9-199c4d?style=for-the-badge&logo=leaflet)
+![AI](https://img.shields.io/badge/AI-Hugging%20Face-FFAE4C?style=for-the-badge&logo=huggingface)
 
 A comprehensive healthcare desert mapping and facility management system for Kenya. This platform provides real-time visualization of healthcare access gaps across all 47 Kenyan counties, enabling policymakers and healthcare administrators to make data-driven decisions.
+
+## Live Demo
+
+🚀 **Live Demo:** [https://kenya-health-platform.vercel.app](https://kenya-health-platform.vercel.app)
 
 </div>
 
@@ -47,11 +52,12 @@ A comprehensive healthcare desert mapping and facility management system for Ken
 
 | Category | Technology |
 |----------|------------|
-| **Frontend** | React 19, TypeScript 5.6 |
+| **Frontend** | React 18, TypeScript 5.6 |
 | **Build Tool** | Vite 6 |
 | **Styling** | TailwindCSS 3.4, Lucide React Icons |
-| **Maps** | Leaflet, React-Leaflet v5 |
-| **State** | React Context API |
+| **Maps** | Leaflet, React-Leaflet 4.2.1 |
+| **AI** | Hugging Face Inference API (Qwen2.5) |
+| **State** | React Hooks (useState, useMemo) |
 | **Routing** | React Router DOM 6 |
 
 ## Getting Started
@@ -177,13 +183,19 @@ wrangler pages deploy dist --project-name=kenya-health-platform
 
 ## Documentation
 
-Detailed documentation is available in the `docs/` directory:
+Detailed documentation is available in the `documents/` directory:
 
-- [Architecture Overview](docs/ARCHITECTURE_DIAGRAMS.md)
-- [Architecture Details](docs/architecture/architecture_overview.md)
-- [Class Diagrams](docs/architecture/class_diagrams.md)
-- [Component Diagrams](docs/architecture/component_diagrams.md)
-- [Deployment Guide](docs/architecture/deployment_architecture.md)
+- [Architecture Overview](documents/ARCHITECTURE_DIAGRAMS.md)
+- [Onboarding Guide](documents/ONBOARDING_GUIDE.md)
+- [Phased Implementations](documents/PHASED_IMPLEMENTATIONS.md)
+- [Summary Reports](documents/SUMMARY_REPORTS.md)
+- [Diagrams](documents/diagrams/):
+  - [Activity Diagrams](documents/diagrams/activity_diagram.mmd)
+  - [Sequence Diagrams](documents/diagrams/sequence_diagram.mmd)
+  - [System Architecture](documents/diagrams/system_arch.mmd)
+  - [Database Schema](documents/diagrams/db_schema.mmd)
+  - [Authentication Flow](documents/diagrams/auth_flow.mmd)
+  - [Component Diagram](documents/diagrams/component_diagram.mmd)
 
 ## License
 
