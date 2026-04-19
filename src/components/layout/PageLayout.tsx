@@ -9,6 +9,8 @@ interface PageLayoutProps {
 }
 
 export function PageLayout({ children, title, subtitle }: PageLayoutProps) {
+  const currentYear = new Date().getFullYear();
+
   return (
     <div className="min-h-screen bg-[#0a0a0f] flex flex-col">
       <Sidebar />
@@ -40,7 +42,7 @@ export function PageLayout({ children, title, subtitle }: PageLayoutProps) {
                 rel="noopener noreferrer"
                 className="hover:text-white transition-colors"
               >
-                © 2024 Cavin Otieno
+                © {currentYear} Cavin Otieno
               </a>
             </div>
           </div>

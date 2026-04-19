@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Bot, Map, Search, Database, Activity, Github, Mail } from 'lucide-react';
+import { LayoutDashboard, Bot, Map, Search, Database, Activity, Github, Mail, Linkedin } from 'lucide-react';
 
 const navItems = [
   { to: '/', icon: LayoutDashboard, label: 'Command Center' },
@@ -64,6 +64,15 @@ export function Sidebar() {
               title="GitHub Profile"
             >
               <Github className="w-4 h-4" />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/cavin-otieno-9a841260/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-white transition-colors"
+              title="LinkedIn Profile"
+            >
+              <Linkedin className="w-4 h-4" />
             </a>
             <a
               href="mailto:cavin.otieno012@gmail.com"
